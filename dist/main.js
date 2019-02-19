@@ -6,52 +6,93 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var itemsList = [];
+var itemList = [];
 
 var Todo =
 /*#__PURE__*/
 function () {
-  function Todo(text, status) {
+  function Todo(item, status) {
     _classCallCheck(this, Todo);
 
-    this.text = text;
+    this.item = item;
     this.status = status;
-    this.items = itemsList;
+    this.items = itemList;
   }
 
   _createClass(Todo, [{
-    key: "addtodo",
-    value: function addtodo() {
-      var item = {
-        text: this.text,
+    key: "addTodo",
+    value: function addTodo() {
+      var todo = {
+        text: this.item,
         status: this.status
       };
-      this.items.push(item);
-      itemsList = this.items;
+      var index = itemList.findIndex(function (x) {
+        return x.text === todo.text;
+      });
+
+      if (index === -1) {
+        itemList.push(todo);
+      } else {
+        alert('already added');
+      }
     }
   }], [{
-    key: "showItem",
-    value: function showItem() {
-      return itemsList;
+    key: "statusChange",
+    value: function statusChange(todo) {
+      var index = itemList.findIndex(function (x) {
+        return x.text === todo;
+      });
+      itemList[index].status = !itemList[index].status;
+    }
+  }, {
+    key: "getAllData",
+    value: function getAllData() {
+      return itemList;
+    }
+  }, {
+    key: "deleteData",
+    value: function deleteData(todo) {
+      var index = itemList.findIndex(function (x) {
+        return x.text === todo;
+      });
+      itemList.splice(index, 1);
     }
   }]);
 
   return Todo;
 }();
 
-var getTodos = function getTodos() {
-  var allItems = Todo.showItem();
-  console.log(allItems);
+var showAllData = function showAllData() {
+  var allData = Todo.getAllData();
+  var allList = '';
+  allData.map(function (todo) {
+    allList += "<li class=\"".concat(todo.status === true ? 'active' : 'notactive', "\"  onclick = \"changeStatus('").concat(todo.text, "')\">").concat(todo.text, " <button onclick=\"deleteData('").concat(todo.text, "')\">x</button></li>");
+  });
+  document.getElementById('todoList').innerHTML = allList;
 };
 
-var addNewTodo = function addNewTodo() {
-  var a = new Todo('Go futsal', false);
-  a.addtodo();
-  getTodos();
-  var b = new Todo('Go College', true);
-  b.addtodo();
-  getTodos();
+var handleSubmit = function handleSubmit(e) {
+  e.preventDefault();
+  var text = e.target.todo.value;
+  var todo = new Todo(text, false);
+  todo.addTodo();
+  e.target.reset();
+  showAllData();
 };
 
-getTodos();
-addNewTodo();
+var resetAllData = function resetAllData() {
+  itemList = [];
+  showAllData();
+};
+
+var changeStatus = function changeStatus(text) {
+  Todo.statusChange(text);
+  showAllData();
+};
+
+var deleteData = function deleteData(text) {
+  Todo.deleteData(text);
+  showAllData();
+};
+
+showAllData();

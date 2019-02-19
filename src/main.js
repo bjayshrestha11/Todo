@@ -1,36 +1,69 @@
-let itemsList = []
-class Todo {
-    constructor(text,status){
-        this.text=text;
-        this.status=status;
-        this.items = itemsList
+let itemList = []
+class Todo{
+    constructor(item, status){
+        this.item = item;
+        this.status = status;
+        this.items = itemList;
     }
-    addtodo(){
-        let item ={
-            text: this.text,
+    addTodo(){
+        let todo = {
+            text : this.item,
             status: this.status
         }
-        this.items.push(item);
-        itemsList = this.items
+        let index = itemList.findIndex(x => x.text === todo.text)
+        if(index === -1){
+            itemList.push(todo);
+        }else{
+            alert('already added');
+        }
     }
-    static showItem(){
-        return itemsList
+
+    static statusChange(todo){
+        let index = itemList.findIndex(x => x.text === todo)
+        itemList[index].status = !itemList[index].status;
     }
+
+    static getAllData(){
+        return itemList;
+    }
+
+    static deleteData(todo) {
+        let index = itemList.findIndex(x => x.text === todo)
+        itemList.splice(index, 1);
+    }
+
 }
 
-let getTodos = () => {
-    let allItems = Todo.showItem();
-    console.log(allItems);    
+let showAllData = () => {
+    let allData = Todo.getAllData();
+    let allList = ''
+
+    allData.map(todo => {
+
+        allList += `<li class="${todo.status === true ? 'active' : 'notactive'}"  onclick = "changeStatus('${todo.text}')">${todo.text} <button onclick="deleteData('${todo.text}')">x</button></li>`
+    })
+    document.getElementById('todoList').innerHTML = allList;
 }
 
-let addNewTodo = () => {
-    let a = new Todo('Go futsal',false);
-    a.addtodo();
-    getTodos();
-    let b = new Todo('Go College',true);
-    b.addtodo();
-    getTodos();
+let handleSubmit = (e) => {
+    e.preventDefault();
+    let text = e.target.todo.value;
+    let todo = new Todo(text, false);
+    todo.addTodo();
+    e.target.reset();
+    showAllData();
+}
+let resetAllData = () => {
+    itemList = [];
+    showAllData();
+}
+let changeStatus = (text) => {
+    Todo.statusChange(text);
+    showAllData();
+}
+let deleteData = (text) => {
+    Todo.deleteData(text);
+    showAllData();
 }
 
-getTodos();
-addNewTodo();
+showAllData();

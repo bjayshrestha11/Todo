@@ -1,0 +1,19 @@
+ES6
+let , const and var
+string literals->
+local storage
+classes and this
+DOM
+arrow functions
+inheritance
+
+babellijs.io
+
+css(css & deep dive, frameworks, pre processor, architecture, ) ->SMACSS, BEM, SUITCSS, SMACSS
+
+Transpiler->babell
+Task Runner->Gulp, Grunt
+
+Web Pack
+
+TypeScript

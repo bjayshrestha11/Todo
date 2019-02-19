@@ -4,10 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Todo List</title>
+    <style>
+        .active{
+            color: green;
+        }
+        .notactive{
+            color: red;
+        }
+    </style>
 </head>
 <body>
     
+    <form onsubmit="handleSubmit(event)">
+        <label>Todo</label>
+        <input type="text" placeholder="enter todo" name="todo"><br/><br/>
+        <input type="submit"/>
+    </form>
+    <ul id="todoList">
+        
+    </ul>
+    <button onclick="resetAllData()">Reset All</button>
+
     <script src="./dist/main.js"></script>
+
 </body>
 </html>
